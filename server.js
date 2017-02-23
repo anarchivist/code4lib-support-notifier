@@ -4,8 +4,8 @@ const bodyParser = require('body-parser')
 const fetch = require('node-fetch')
 const url = require('url')
 
-if (!process.env.PORT || !process.env.INTEGRATION_TOKEN || !process.env.WEBHOOK_URL) {
-    console.warn(`use: PORT=8081 INTEGRATION_TOKEN=1xxxxx WEBHOOK_URL=https://xxx ${process.argv.slice(0,2).join(' ')}`)
+if (!process.env.PORT || !process.env.INTEGRATION_TOKEN || !process.env.WEBHOOK_URL || !process.env.PHONE_NUMBER ) {
+    console.warn(`use: PORT=8081 INTEGRATION_TOKEN=1xxxxx WEBHOOK_URL=https://xxx PHONE_NUMBER=800-555-1212 ${process.argv.slice(0,2).join(' ')}`)
     process.exit(1)
 }
 
@@ -36,10 +36,10 @@ app.post('/', (req, res) => {
             return res.text()
         }
     })
-    .then(() => res.end("Your message has been forwarded to the admins, we'll get in touch as soon as possible.\n"))
+    .then(() => res.end(`Your message has been forwarded to the duty officers. We'll get in touch as soon as possible. To reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}.\n`))
     .catch(err => {
        console.warn(err)
-       res.status(500).end("There was an error sending your request\n")
+       res.status(500).end(`There was an error sending your request. To reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n`)
     })
 
 })
