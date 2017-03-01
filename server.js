@@ -22,7 +22,7 @@ app.post('/', (req, res) => {
             "content-type": 'application/json'
         },
         body: JSON.stringify({
-            text: `Message from @${req.body.user_name} in #${req.body.channel_name}:\n\n${req.body.text}`,
+            text: `@here: Message from @${req.body.user_name} in #${req.body.channel_name}:\n\n${req.body.text}`,
             link_names: 1
         })
     }).then(res => {
@@ -36,10 +36,10 @@ app.post('/', (req, res) => {
             return res.text()
         }
     })
-    .then(() => res.end(`Your message has been forwarded to the duty officers. We'll get in touch as soon as possible. To reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}.\n`))
+    .then(() => res.end(`Your message has been forwarded to the duty officers. We'll get in touch as soon as possible.\n\nTo reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see <http://2017.code4lib.org/duty-officers/>\n`))
     .catch(err => {
        console.warn(err)
-       res.status(500).end(`There was an error sending your request. To reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n`)
+       res.status(500).end(`There was an error sending your request. To reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see <http://2017.code4lib.org/duty-officers/>`)
     })
 
 })
