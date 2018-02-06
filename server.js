@@ -17,7 +17,7 @@ app.post('/', (req, res) => {
     }
 
     fetch(process.env.WEBHOOK_URL, {
-        method: 'POST', 
+        method: 'POST',
         headers: {
             "content-type": 'application/json'
         },
@@ -36,7 +36,7 @@ app.post('/', (req, res) => {
             return res.text()
         }
     })
-    .then(() => res.end(`Your message has been forwarded to the duty officers. We'll get in touch as soon as possible.\n\nTo reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see <http://2017.code4lib.org/duty-officers/>\n`))
+    .then(() => res.end(`Your message has been forwarded to the duty officers. We'll get in touch as soon as possible.\n\nTo reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see <http://2018.code4lib.org/conduct/#officers>\n`))
     .catch(err => {
        console.warn(err)
        res.status(500).end(`There was an error sending your request. To reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see <http://2017.code4lib.org/duty-officers/>`)
