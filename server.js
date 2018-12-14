@@ -5,7 +5,7 @@ const fetch = require('node-fetch')
 const url = require('url')
 
 if (!process.env.PORT || !process.env.INTEGRATION_TOKEN || !process.env.WEBHOOK_URL || !process.env.PHONE_NUMBER ) {
-    console.warn(`use: PORT=8081 INTEGRATION_TOKEN=1xxxxx WEBHOOK_URL=https://xxx PHONE_NUMBER=800-555-1212 ${process.argv.slice(0,2).join(' ')}`)
+    console.warn(`use: PORT=8081 INTEGRATION_TOKEN=1xxxxx WEBHOOK_URL=https://xxx PHONE_NUMBER=800-555-1212 CONDUCT_LINK=https://yyy ${process.argv.slice(0,2).join(' ')}`)
     process.exit(1)
 }
 
@@ -15,7 +15,7 @@ app.post('/', (req, res) => {
     if (req.body.token != process.env.INTEGRATION_TOKEN) {
         return res.status(402).end("Bad token")
     }
-
+    console.log(`Message from @${req.body.user_name} in #${req.body.channel_name}: ${req.body.text}`)
     fetch(process.env.WEBHOOK_URL, {
         method: 'POST',
         headers: {
@@ -36,10 +36,10 @@ app.post('/', (req, res) => {
             return res.text()
         }
     })
-    .then(() => res.end(`Your message has been forwarded to the duty officers. We'll get in touch as soon as possible.\n\nTo reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see <http://2018.code4lib.org/conduct/#officers>\n`))
+    .then(() => res.end(`Your message has been forwarded to the duty officers. We'll get in touch as soon as possible.\n\nTo reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see ${process.env.CONDUCT_LINK}\n`))
     .catch(err => {
        console.warn(err)
-       res.status(500).end(`There was an error sending your request. To reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see <http://2017.code4lib.org/duty-officers/>`)
+       res.status(500).end(`There was an error sending your request. To reach the duty officer on call by phone or SMS, please use the following number: ${process.env.PHONE_NUMBER}\n\nFor more information on contacting duty officers, see ${process.env.CONDUCT_LINK}`)
     })
 
 })
